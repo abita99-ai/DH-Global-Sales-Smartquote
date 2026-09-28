@@ -1,0 +1,21 @@
+{
+  "name": "DAIHAN Scientific Global B2B RFQ Portal",
+  "short_name": "DAIHAN B2B",
+  "description": "Zero Specification Error Global B2B Product Discovery & Smart RFQ Portal",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=192&auto=format&fit=crop&q=80",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=512&auto=format&fit=crop&q=80",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

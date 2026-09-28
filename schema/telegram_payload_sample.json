@@ -1,0 +1,43 @@
+{
+  "rfqNo": "RFQ-20260927-8842",
+  "submittedAt": "2026-09-27T02:15:30.000Z",
+  "pipelineVersion": "v2.0",
+  "buyer": {
+    "company": "BioPharma Research Solutions GmbH",
+    "email": "dr.schmidt@biopharma-research.de",
+    "country": "Germany",
+    "city": "Frankfurt",
+    "role": "Procurement Manager",
+    "targetDelivery": "Within 4 Weeks",
+    "notes": "Please provide CIF Hamburg port quote and include CE conformity certificates."
+  },
+  "items": [
+    {
+      "productId": "DH-FON-050",
+      "modelNo": "ThermoStable™ FON-50",
+      "catNo": "DH.WON05050",
+      "voltage": "230V, 50/60Hz",
+      "plug": "Type C (Euro / Schuko)",
+      "accessories": ["ACC-FON-SH01"],
+      "qty": 2,
+      "isSpecVerified": true,
+      "verifiedAt": "2026-09-27T02:14:10.000Z"
+    },
+    {
+      "productId": "DH-MSH-020",
+      "modelNo": "SMHS-6",
+      "catNo": "DH.WMH03020",
+      "voltage": "230V, 50/60Hz",
+      "plug": "Type C (Euro / Schuko)",
+      "accessories": ["ACC-STIR-BAR"],
+      "qty": 1,
+      "isSpecVerified": true,
+      "verifiedAt": "2026-09-27T02:14:50.000Z"
+    }
+  ],
+  "routing": {
+    "assignedDistributor": "Euro Scientific Instruments GmbH (Frankfurt)",
+    "routingNoticeShown": true,
+    "confirmationEmailSent": true
+  }
+}
