@@ -1116,77 +1116,123 @@ function renderRfqSubmitScreen(container) {
 async function handleRfqFormSubmit(e) {
   e.preventDefault();
 
-  const company = document.getElementById('rfq-company')?.value;
-  const email = document.getElementById('rfq-email')?.value;
-  const country = document.getElementById('rfq-country')?.value;
-  const city = document.getElementById('rfq-city')?.value;
-  const role = document.getElementById('rfq-role')?.value;
-  const notes = document.getElementById('rfq-notes')?.value;
+  // 1. Strict Global Double-Click & Multi-Submission Lock Guard
+  if (AppState.isSubmittingRFQ) {
+    console.warn('RFQ submission is already in progress. Blocked duplicate trigger.');
+    return;
+  }
+
+  const submitBtn = document.getElementById('btn-submit-rfq');
+  const company = document.getElementById('rfq-company')?.value?.trim();
+  const email = document.getElementById('rfq-email')?.value?.trim();
+  const country = document.getElementById('rfq-country')?.value?.trim();
+  const city = document.getElementById('rfq-city')?.value?.trim();
+  const role = document.getElementById('rfq-role')?.value?.trim();
+  const notes = document.getElementById('rfq-notes')?.value?.trim();
 
   if (!country || !city || !company || !email) {
     alert('Please complete all mandatory fields (Company, Country, City, Email).');
     return;
   }
 
-  const rfqRefNo = 'RFQ-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(1000 + Math.random() * 9000);
-  const userType = AppState.currentUser ? AppState.currentUser.userType : 'POTENTIAL_BUYER';
+  // 2. Debounce Check: Prevent submitting identical quote within 10 seconds
+  const now = Date.now();
+  const submissionKey = `${email}_${AppState.cart.map(i => i.id).join('_')}`;
+  if (AppState.lastSubmissionTime && (now - AppState.lastSubmissionTime < 10000) && AppState.lastSubmissionKey === submissionKey) {
+    alert('This RFQ has already been sent! Redirecting to confirmation page...');
+    window.location.hash = '#rfq-complete';
+    return;
+  }
 
-  const payload = {
-    rfqNo: rfqRefNo,
-    submittedAt: new Date().toISOString(),
-    userType: userType,
-    buyer: {
-      company,
-      email,
-      country,
-      city,
-      role,
-      notes
-    },
-    items: [...AppState.cart],
-    telegramConfig: {
-      botToken: AppState.integrationConfig.telegramBotToken,
-      chatId: AppState.integrationConfig.telegramChatId
-    },
-    googleSheetUrl: AppState.integrationConfig.googleSheetWebhookUrl
-  };
+  // Engage Lock & Disable UI Immediately
+  AppState.isSubmittingRFQ = true;
+  AppState.lastSubmissionTime = now;
+  AppState.lastSubmissionKey = submissionKey;
 
-  // 1. Submit to Vercel Serverless / Backend Gateway
-  let backendResult = null;
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.style.pointerEvents = 'none';
+    submitBtn.style.opacity = '0.6';
+    submitBtn.innerHTML = `<span>⏳</span> Processing & Routing RFQ... Please Wait`;
+  }
+
   try {
-    const res = await fetch('/api/rfq', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if (res.ok) {
-      backendResult = await res.json();
+    const rfqRefNo = 'RFQ-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(1000 + Math.random() * 9000);
+    const userType = AppState.currentUser ? AppState.currentUser.userType : 'POTENTIAL_BUYER';
+
+    const payload = {
+      rfqNo: rfqRefNo,
+      submittedAt: new Date().toISOString(),
+      userType: userType,
+      buyer: {
+        company,
+        email,
+        country,
+        city,
+        role,
+        notes
+      },
+      items: [...AppState.cart],
+      telegramConfig: {
+        botToken: AppState.integrationConfig.telegramBotToken,
+        chatId: AppState.integrationConfig.telegramChatId
+      },
+      googleSheetUrl: AppState.integrationConfig.googleSheetWebhookUrl
+    };
+
+    // 3. Submit to Vercel Serverless / Backend Gateway (Single Entry Point)
+    let backendResult = null;
+    try {
+      const res = await fetch('/api/rfq', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        backendResult = await res.json();
+      }
+    } catch (err) {
+      console.log('Local static fallback mode engaged:', err);
     }
-  } catch (err) {
-    console.log('Local static fallback mode engaged');
+
+    // 4. Direct Browser-side Dispatch ONLY IF Backend API was unavailable (Fallback)
+    const isBackendHandled = backendResult && backendResult.success;
+    if (!isBackendHandled) {
+      if (AppState.integrationConfig.telegramBotToken && AppState.integrationConfig.telegramChatId) {
+        directTelegramDispatch(payload);
+      }
+      if (AppState.integrationConfig.googleSheetWebhookUrl) {
+        directGoogleSheetDispatch(payload);
+      }
+    }
+
+    AppState.lastSubmittedRfq = {
+      ...payload,
+      backendResult: backendResult
+    };
+
+    // Clear Cart & Navigate
+    AppState.cart = [];
+    localStorage.removeItem('daihan_rfq_cart');
+    updateHeaderUI();
+
+    window.location.hash = '#rfq-complete';
+
+  } catch (submissionErr) {
+    console.error('Fatal submission error:', submissionErr);
+    alert('An error occurred while dispatching your RFQ. Please try again.');
+  } finally {
+    // Release Lock after transition
+    setTimeout(() => {
+      AppState.isSubmittingRFQ = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.style.pointerEvents = 'auto';
+        submitBtn.style.opacity = '1';
+        submitBtn.innerHTML = `<span>🚀</span> Send Smart RFQ Now`;
+      }
+    }, 1500);
   }
-
-  // 2. Direct Browser-side Telegram Dispatch (Fallback ONLY if backend API did not respond)
-  const isBackendHandled = backendResult && backendResult.success;
-  if (!isBackendHandled && AppState.integrationConfig.telegramBotToken && AppState.integrationConfig.telegramChatId) {
-    directTelegramDispatch(payload);
-  }
-
-  // 3. Direct Browser-side Google Sheets Dispatch (Fallback ONLY if backend API did not respond)
-  if (!isBackendHandled && AppState.integrationConfig.googleSheetWebhookUrl) {
-    directGoogleSheetDispatch(payload);
-  }
-
-  AppState.lastSubmittedRfq = {
-    ...payload,
-    backendResult: backendResult
-  };
-
-  AppState.cart = [];
-  localStorage.removeItem('daihan_rfq_cart');
-  updateHeaderUI();
-
-  window.location.hash = '#rfq-complete';
 }
 
 function directGoogleSheetDispatch(payload) {
