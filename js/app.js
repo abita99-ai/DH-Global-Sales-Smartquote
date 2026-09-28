@@ -1166,15 +1166,14 @@ async function handleRfqFormSubmit(e) {
     console.log('Local static fallback mode engaged');
   }
 
-  // 2. Direct Browser-side Telegram Dispatch (Fallback only if backend didn't already send it)
-  const backendTelegramSent = backendResult && backendResult.telegram && backendResult.telegram.status === 'SUCCESS';
-  if (!backendTelegramSent && AppState.integrationConfig.telegramBotToken && AppState.integrationConfig.telegramChatId) {
+  // 2. Direct Browser-side Telegram Dispatch (Fallback ONLY if backend API did not respond)
+  const isBackendHandled = backendResult && backendResult.success;
+  if (!isBackendHandled && AppState.integrationConfig.telegramBotToken && AppState.integrationConfig.telegramChatId) {
     directTelegramDispatch(payload);
   }
 
-  // 3. Direct Browser-side Google Sheets Dispatch (Fallback only if backend didn't already send it)
-  const backendSheetsSent = backendResult && backendResult.googleSheets && backendResult.googleSheets.status === 'SUCCESS';
-  if (!backendSheetsSent && AppState.integrationConfig.googleSheetWebhookUrl) {
+  // 3. Direct Browser-side Google Sheets Dispatch (Fallback ONLY if backend API did not respond)
+  if (!isBackendHandled && AppState.integrationConfig.googleSheetWebhookUrl) {
     directGoogleSheetDispatch(payload);
   }
 
