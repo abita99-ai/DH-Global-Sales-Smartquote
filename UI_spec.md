@@ -45,7 +45,7 @@ graph TD
 ### 🔹 Global Shared Components (공통 구성 요소)
 * **Site Header (`.site-header`)**:
   * **Logo Area**: "DH" 로고 아이콘 (딥 블렌딩 시안 그라디언트 + 글로우) 및 대한과학 브랜드 텍스트.
-  * **Navigation Links**: Home, Categories, Applications, 2026 Launches, E-Catalog, BI Dashboard.
+  * **Navigation Links**: Home, Categories, Applications, 2026 Launches, E-Catalog, BI Dashboard (데스크톱 1줄 정렬 / 모바일 `<768px` 환경 3×2 그리드 2줄 자동 전환: 1행-Home/Categories/Applications, 2행-2026 Launches/E-Catalog/BI Dashboard).
   * **Header Actions**:
     * `Agent Login / Dashboard`: 대리점 전용 할인율 상태 및 대시보드 바로가기.
     * `Customer Sign In`: 신규 바이어 계정 생성/로그인.
@@ -264,7 +264,7 @@ StitchMCP 및 웹 프로토타입 작성 시 준수해야 하는 **제안 1 (App
 | :--- | :--- | :--- |
 | **`> 1280px`** | Desktop / Large Monitor | 3-Column Discovery Grid, 4-Column Product Grid |
 | **`768px ~ 1279px`** | Tablet / Laptop | 2-Column Discovery Grid, 3-Column Product Grid |
-| **`< 768px`** | Mobile Devices | 1-Column Stacked Grid, Header Nav Flex Wrap, Action Bar Column Flex |
+| **`< 768px`** | Mobile Devices | 1-Column Stacked Grid, Header Nav 3×2 Grid (3열 2행 탭), Hero Search Box `min-width: 0`, Action Bar Column Flex |
 
 ---
 
