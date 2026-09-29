@@ -1,8 +1,8 @@
-const CACHE_NAME = 'daihan-b2b-v3.0';
+const CACHE_NAME = 'daihan-b2b-v3.1.0';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './css/style.css',
+  './css/style.css?v=3.1.0',
   './js/catalog-data.js',
   './js/app.js',
   './images/daihan-ci.png',

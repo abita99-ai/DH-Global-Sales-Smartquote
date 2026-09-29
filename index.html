@@ -15,8 +15,8 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
 
-  <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="css/style.css">
+  <!-- CSS Stylesheet (Versioned Cache-Buster) -->
+  <link rel="stylesheet" href="css/style.css?v=3.1.0">
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
@@ -105,7 +105,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=3.0').then(reg => {
+        navigator.serviceWorker.register('sw.js?v=3.1.0').then(reg => {
           reg.update();
           console.log('PWA Service Worker registered:', reg.scope);
         }).catch(err => {
