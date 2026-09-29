@@ -1,10 +1,11 @@
-const CACHE_NAME = 'daihan-b2b-v2.0';
+const CACHE_NAME = 'daihan-b2b-v3.0';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './css/style.css',
   './js/catalog-data.js',
   './js/app.js',
+  './images/daihan-ci.png',
   './manifest.json'
 ];
 
@@ -28,10 +29,23 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
+// Network-First strategy: Fetch fresh assets from network first, fall back to cache when offline
 self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      return cachedResponse || fetch(event.request);
-    })
+    fetch(event.request)
+      .then(networkResponse => {
+        if (networkResponse && networkResponse.status === 200 && event.request.url.startsWith('http')) {
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseClone);
+          });
+        }
+        return networkResponse;
+      })
+      .catch(() => {
+        return caches.match(event.request);
+      })
   );
 });
