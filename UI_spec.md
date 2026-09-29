@@ -60,8 +60,9 @@ graph TD
 * **목적**: 바이어의 첫 방문 지점이자 3가지 직관적 탐색 경로(Multi-Path Discovery) 제공.
 * **주요 UI 요소**:
   * **Ambient Hero Banner (`.hero-banner`)**: 
-    * "Zero Specification Error Gateway" 태그 배지.
-    * 메인 헤드라인: *DAIHAN Scientific Global B2B Product Exploration & Smart RFQ*.
+    * 메인 헤드라인: **Smart RFQ Generator**
+    * 서브 카피: **Fast, Accurate Quotes for Every Lab Need**
+    * 우측 대한과학 CI 브랜드 카드 (`.hero-ci-card`): 대한과학 공식 로고 이미지 (`images/daihan-ci.png`) 배치 및 글래스모피즘 인터랙션 적용.
     * 실시간 자동완성 검색창 (`#hero-search-input`): 모델명(STE-AM47, MS-20D 등), Cat No., 키워드 실시간 매칭 드롭다운.
   * **3-Path Discovery Grid (`.discovery-grid`)**:
     1. **Path 1: Standard Equipment Catalog** (`#products` - 카테고리별 표준 장비).

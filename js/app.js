@@ -233,20 +233,30 @@ function renderHomeScreen(container) {
   const newProducts = DAIHAN_CATALOG.filter(p => p.is2026New).slice(0, 4);
 
   container.innerHTML = `
-    <!-- Hero Banner with Updated Clean Headline -->
+    <!-- Hero Banner with Updated Clean Headline & CI -->
     <section class="hero-banner">
-      <h2>Comfortable selection for your needs.</h2>
-      <p style="margin-bottom:1.75rem; font-size:1.15rem; opacity:0.95;">
-        Instant specification verification for DAIHAN Scientific Instruments.
-      </p>
-      
-      <div style="position:relative; max-width:640px; z-index:100;">
-        <div class="hero-search-box">
-          <input type="text" id="hero-search-input" placeholder="Search by Model No (e.g. STE-AM47, MS-20D, FON-50), Cat No, or Keyword..." oninput="handleSearchAutoComplete(this.value)" autocomplete="off">
-          <button onclick="handleSearchCatalogClick()">Search Catalog</button>
+      <div class="hero-body">
+        <div class="hero-text-content">
+          <h2>Smart RFQ Generator</h2>
+          <p class="hero-subcopy">
+            Fast, Accurate Quotes for Every Lab Need
+          </p>
+          
+          <div style="position:relative; max-width:640px; z-index:100;">
+            <div class="hero-search-box">
+              <input type="text" id="hero-search-input" placeholder="Search by Model No (e.g. STE-AM47, MS-20D, FON-50), Cat No, or Keyword..." oninput="handleSearchAutoComplete(this.value)" autocomplete="off">
+              <button onclick="handleSearchCatalogClick()">Search Catalog</button>
+            </div>
+            <!-- Auto-complete Dropdown List -->
+            <div id="hero-search-results" style="display:none; position:absolute; top:calc(100% + 8px); left:0; right:0; background:white; border-radius:var(--radius-md); box-shadow:0 16px 40px rgba(15,23,42,0.15); border:1px solid #e2e8f0; max-height:360px; overflow-y:auto; z-index:9999;">
+            </div>
+          </div>
         </div>
-        <!-- Auto-complete Dropdown List -->
-        <div id="hero-search-results" style="display:none; position:absolute; top:calc(100% + 8px); left:0; right:0; background:white; border-radius:var(--radius-md); box-shadow:0 16px 40px rgba(15,23,42,0.15); border:1px solid #e2e8f0; max-height:360px; overflow-y:auto; z-index:9999;">
+
+        <div class="hero-ci-wrapper">
+          <div class="hero-ci-card">
+            <img src="images/daihan-ci.png" alt="DAIHAN Scientific CI Logo" class="hero-ci-img">
+          </div>
         </div>
       </div>
     </section>
