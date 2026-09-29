@@ -426,6 +426,7 @@ body {
 
 .hero-search-box input {
   flex: 1;
+  min-width: 0;
   border: none;
   background: transparent;
   outline: none;
@@ -1163,15 +1164,113 @@ body {
 
 @media (max-width: 768px) {
   .header-inner {
+    display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0.85rem;
+    gap: 0.6rem 0.5rem;
+  }
+
+  .logo-area {
+    order: 1;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .logo-text h1 {
+    font-size: 0.95rem;
+  }
+
+  .logo-text p {
+    font-size: 0.65rem;
+  }
+
+  .header-actions {
+    order: 2;
+    gap: 0.35rem;
+  }
+
+  .site-header nav {
+    order: 3;
+    width: 100%;
+    margin-top: 0.15rem;
+  }
+
+  /* Mobile Navigation Bar: 3x2 Grid (3 on top row, 3 on bottom row) */
+  .nav-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav-links li {
+    display: flex;
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem 0.2rem;
+    font-size: 0.775rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    background: #f1f5f9;
+    border: 1px solid var(--border-color);
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: var(--primary);
+    font-weight: 800;
   }
 
   .hero-banner {
-    padding: 2.25rem 1.25rem;
+    padding: 1.75rem 1rem;
+    margin-bottom: 2rem;
   }
 
   .hero-banner h2 {
-    font-size: 2rem;
+    font-size: 1.65rem;
+  }
+
+  .hero-banner p,
+  .hero-subcopy {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-search-box {
+    width: 100%;
+    gap: 0.4rem;
+  }
+
+  .hero-search-box input {
+    min-width: 0;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .hero-search-box button {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.825rem;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .spec-header-grid {
@@ -1186,5 +1285,22 @@ body {
     flex-direction: column;
     gap: 1.25rem;
     align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text p {
+    display: none;
+  }
+
+  .nav-links a {
+    font-size: 0.725rem;
+    padding: 0.45rem 0.15rem;
+  }
+
+  .btn-agent-login,
+  .cart-btn {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.75rem;
   }
 }
