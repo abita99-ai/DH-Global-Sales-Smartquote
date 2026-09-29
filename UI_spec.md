@@ -263,8 +263,8 @@ StitchMCP 및 웹 프로토타입 작성 시 준수해야 하는 **제안 1 (App
 | Breakpoint | Target Devices | Layout Adjustments |
 | :--- | :--- | :--- |
 | **`> 1280px`** | Desktop / Large Monitor | 3-Column Discovery Grid, 4-Column Product Grid |
-| **`768px ~ 1279px`** | Tablet / Laptop | 2-Column Discovery Grid, 3-Column Product Grid |
-| **`< 768px`** | Mobile Devices | 1-Column Stacked Grid, Header Nav 3×2 Grid (3열 2행 탭), Hero Search Box `min-width: 0`, Action Bar Column Flex |
+| **`1025px ~ 1279px`** | Laptop / Desktop | 2-Column Discovery Grid, 3-Column Product Grid |
+| **`< 1024px`** | Mobile / Tablet / In-App Browsers | 1-Column Stacked Grid, Header Nav 3×2 Grid (3열 2행 탭), Viewport Auto-Scaling Prevention (`maximum-scale=1.0`), Hero Search Box `min-width: 0`, Action Bar Column Flex |
 
 ---
 
