@@ -200,7 +200,7 @@ function updateHeaderUI() {
     if (agentArea) {
       agentArea.innerHTML = `
         <a href="#login/agent" class="btn-agent-login">
-          <span>🔒</span> Agent Sign In
+          <span>🔒</span> Official Distributor
         </a>
       `;
     }
